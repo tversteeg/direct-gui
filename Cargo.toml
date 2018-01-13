@@ -17,6 +17,8 @@ categories = ["rendering", "game-engines", "multimedia"]
 travis-ci = {repository = "tversteeg/direct-gui"}
 
 [dependencies]
+blit = "0.3"
+image = "0.18"
 
 [[example]]
 name = "minifb"
