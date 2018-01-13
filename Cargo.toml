@@ -1,0 +1,26 @@
+[package]
+name = "direct-gui"
+version = "0.1.0"
+authors = ["Thomas Versteeg <thomasversteeg@gmx.com>"]
+license = "GPL-3.0"
+homepage = "https://github.com/tversteeg/direct-gui"
+
+readme = "README.md"
+description = "Simple direct rendering of GUI controls on a buffer"
+documentation = "https://docs.rs/direct-gui"
+
+repository = "https://github.com/tversteeg/direct-gui.git"
+keywords = ["gui", "gamedev"]
+categories = ["rendering", "game-engines", "multimedia"]
+
+[badges]
+travis-ci = {repository = "tversteeg/direct-gui"}
+
+[dependencies]
+
+[[example]]
+name = "minifb"
+path = "examples/minifb.rs"
+
+[dev-dependencies]
+minifb = "0.10"
