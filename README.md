@@ -31,3 +31,32 @@ This should produce the following window:
 ![Example](img/example.png?raw=true)
 
 ## Examples
+
+```rust
+use direct_gui::*;
+use direct_gui::controls::*;
+
+let screen_size = (800i32, 600i32);
+
+// Create a buffer where we will render to
+let mut buffer: Vec<u32> = vec![0; (screen_size.0 * screen_size.1) as usize];
+
+// Create a new instance of the gui
+let mut gui = Gui::new(screen_size);
+
+// Load the sprite of a button
+let button_img = gui.load_sprite_from_file("examples/button.png", 0xFF00FF).unwrap();
+
+// Create a new button using the sprite loaded before at pixel (20, 10)
+gui.register(Button::new(button_img).pos(20, 10));
+
+// Handle "input events" by pretending that the mouse is hovering over the button.
+let cs = ControlState {
+    mouse_pos: (22, 12),
+    ..ControlState::default()
+};
+gui.update(&cs);
+
+// Finally render the current gui state to the buffer
+gui.draw_to_buffer(&mut buffer);
+```

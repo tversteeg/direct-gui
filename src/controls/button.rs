@@ -2,12 +2,14 @@ use blit::BlitBuffer;
 
 use super::*;
 
+/// In what state the button currently is in as determined by the `update` function.
 enum ButtonState {
     Normal,
     Hover,
     Pressed
 }
 
+/// A button widget using a simple spritesheet divided into 3 parts for rendering its state.
 pub struct Button {
     sprite_ref: usize,
 

@@ -2,6 +2,7 @@ use blit::BlitBuffer;
 
 use super::*;
 
+/// A text label widget using a font resource to render the text.
 pub struct Label {
     font_ref: usize,
 

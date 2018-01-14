@@ -3,6 +3,7 @@ use image;
 use std::path::Path;
 use std::error::Error;
 
+/// A internal handler of static resources such as sprites and fonts.
 pub struct Resources {
     sprites: Vec<BlitBuffer>,
     fonts: Vec<BlitBuffer>
@@ -34,6 +35,7 @@ impl Resources {
         Ok(index)
     }
 
+    /// Retrieves the sprite if it exists.
     pub fn get_sprite(&self, sprite_ref: usize) -> Option<&BlitBuffer> {
         if sprite_ref < self.sprites.len() {
             Some(&self.sprites[sprite_ref])
