@@ -16,8 +16,8 @@ fn main() {
     let mut gui = Gui::new((WIDTH as i32, HEIGHT as i32));
 
     let button_img = gui.load_sprite_from_file("examples/button.png", 0xFF00FF).unwrap();
-    gui.register_button(Button::new(button_img).pos(20, 10));
-    gui.register_button(Button::new(button_img).pos(100, 10));
+    gui.register(Button::new(button_img).pos(20, 10));
+    gui.register(Label::new(button_img).pos(100, 10).text("This is a label"));
 
     while window.is_open() && !window.is_key_down(Key::Escape) {
         let mut cs = ControlState {

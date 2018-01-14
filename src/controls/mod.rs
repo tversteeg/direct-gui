@@ -1,8 +1,10 @@
-pub mod button;
+mod button;
+mod text;
 
 pub use self::button::Button;
+pub use self::text::Label;
 
-use blit::BlitBuffer;
+use super::resources::Resources;
 
 pub struct ControlState {
     pub mouse_pos: (i32, i32),
@@ -27,7 +29,7 @@ impl Default for ControlState {
 }
 
 pub trait Control {
-    fn update(&mut self, args: &ControlState, sprites: &Vec<BlitBuffer>);
+    fn update(&mut self, args: &ControlState, res: &Resources);
 
-    fn draw(&self, buffer: &mut Vec<u32>, buffer_size: (i32, i32), images: &Vec<BlitBuffer>);
+    fn draw(&self, buffer: &mut Vec<u32>, buffer_size: (i32, i32), res: &Resources);
 }

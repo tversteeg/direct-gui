@@ -16,7 +16,7 @@ pub struct Button {
 }
 
 impl Button {
-    /// Create a new button loading a image from the path.
+    /// Create a new button with a sprite without text.
     ///
     /// The button image needs to be 3 buttons divided vertically:
     ///  1. normal state
@@ -54,8 +54,8 @@ impl Button {
 }
 
 impl Control for Button {
-    fn update(&mut self, args: &ControlState, sprites: &Vec<BlitBuffer>) {
-        let sprite = &sprites[self.sprite_ref];
+    fn update(&mut self, args: &ControlState, res: &Resources) {
+        let sprite = res.get_sprite(self.sprite_ref).unwrap();
 
         if !args.mouse_collision(self.pos, sprite.size()) {
             self.state = ButtonState::Normal;
@@ -67,8 +67,8 @@ impl Control for Button {
         }
     }
 
-    fn draw(&self, buffer: &mut Vec<u32>, buffer_size: (i32, i32), sprites: &Vec<BlitBuffer>) {
-        let sprite = &sprites[self.sprite_ref];
+    fn draw(&self, buffer: &mut Vec<u32>, buffer_size: (i32, i32), res: &Resources) {
+        let sprite = res.get_sprite(self.sprite_ref).unwrap();
 
         let mut draw_size = sprite.size();
         draw_size.1 /= 3;
