@@ -1,9 +1,11 @@
 extern crate direct_gui;
 extern crate minifb;
+extern crate blit;
 
 use direct_gui::*;
 use direct_gui::controls::*;
 use minifb::*;
+use blit::Color;
 
 const WIDTH: usize = 200;
 const HEIGHT: usize = 50;
@@ -15,9 +17,9 @@ fn main() {
 
     let mut gui = Gui::new((WIDTH as i32, HEIGHT as i32));
 
-    let button_img = gui.load_sprite_from_file("examples/button.png", 0xFF00FF).unwrap();
+    let button_img = gui.load_sprite_from_file("examples/button.png", Color::from_u32(0xFF00FF)).unwrap();
     gui.register(Button::new(button_img).pos(20, 10));
-    gui.register(Label::new(button_img).pos(100, 10).text("This is a label"));
+    //gui.register(Label::new(button_img).pos(100, 10).text("This is a label"));
 
     while window.is_open() && !window.is_key_down(Key::Escape) {
         let mut cs = ControlState {

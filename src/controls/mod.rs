@@ -4,7 +4,7 @@ mod text;
 pub use self::button::Button;
 pub use self::text::Label;
 
-use super::resources::Resources;
+use super::resources::*;
 
 /// Data that needs to be supplied to the `update` function.
 pub struct ControlState {
@@ -37,5 +37,5 @@ pub trait Control {
     fn update(&mut self, args: &ControlState, res: &Resources);
 
     /// Draw the control on the output buffer.
-    fn draw(&self, buffer: &mut Vec<u32>, buffer_size: (i32, i32), res: &Resources);
+    fn draw(&self, buffer: &mut Vec<u32>, buffer_width: usize, res: &Resources);
 }

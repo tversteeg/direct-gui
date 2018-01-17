@@ -1,6 +1,6 @@
 [package]
 name = "direct-gui"
-version = "0.1.2"
+version = "0.1.3"
 authors = ["Thomas Versteeg <thomasversteeg@gmx.com>"]
 license = "GPL-3.0"
 homepage = "https://github.com/tversteeg/direct-gui"
@@ -11,13 +11,13 @@ documentation = "https://docs.rs/direct-gui"
 
 repository = "https://github.com/tversteeg/direct-gui.git"
 keywords = ["gui", "gamedev"]
-categories = ["rendering", "game-engines", "multimedia"]
+categories = ["gui", "rendering", "game-engines", "multimedia"]
 
 [badges]
 travis-ci = {repository = "tversteeg/direct-gui"}
 
 [dependencies]
-blit = "0.3"
+blit = "0.4"
 image = "0.18"
 
 [[example]]

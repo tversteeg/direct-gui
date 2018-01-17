@@ -58,8 +58,10 @@ use std::error::Error;
 pub mod controls;
 mod resources;
 
+use blit::*;
+
 use controls::*;
-use resources::Resources;
+use resources::*;
 
 /// The main entry point.
 ///
@@ -91,7 +93,7 @@ impl Gui {
     /// Draw the drawable GUI controls on a target buffer.
     pub fn draw_to_buffer(&self, buffer: &mut Vec<u32>) {
         for control in self.controls.iter() {
-            control.draw(buffer, self.size, &self.resources);
+            control.draw(buffer, self.size.0 as usize, &self.resources);
         }
     }
 
@@ -106,7 +108,7 @@ impl Gui {
     /// for this is `0xFF00FF`.
     ///
     /// Returns a reference to the image.
-    pub fn load_sprite_from_file<P>(&mut self, path: P, mask_color: u32) -> Result<usize, Box<Error>> where P: AsRef<Path> {
+    pub fn load_sprite_from_file<P>(&mut self, path: P, mask_color: Color) -> Result<SpriteRef, Box<Error>> where P: AsRef<Path> {
         self.resources.load_sprite_from_file(path, mask_color)
     }
 }

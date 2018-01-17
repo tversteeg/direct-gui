@@ -48,6 +48,6 @@ impl Label {
 impl Control for Label {
     fn update(&mut self, args: &ControlState, res: &Resources) { }
 
-    fn draw(&self, buffer: &mut Vec<u32>, buffer_size: (i32, i32), res: &Resources) {
+    fn draw(&self, buffer: &mut Vec<u32>, buffer_width: usize, res: &Resources) {
     }
 }
