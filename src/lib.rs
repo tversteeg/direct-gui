@@ -36,7 +36,7 @@
 //! let button_img = gui.load_sprite_from_file("examples/button.png", Color::from_u32(0xFF00FF)).unwrap();
 //!
 //! // Create a new button using the sprite loaded before at pixel (20, 10)
-//! gui.register(Button::new(button_img).pos(20, 10));
+//! gui.register(Button::new_with_sprite(button_img).pos(20, 10));
 //!
 //! // Handle "input events" by pretending that the mouse is hovering over the button.
 //! let cs = ControlState {
