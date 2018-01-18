@@ -18,8 +18,8 @@ impl ControlState {
     /// Determines if the mouse is inside a rectangle. Mostly used internally.
     pub fn mouse_collision(&self, pos: (i32, i32), size: (i32, i32)) -> bool {
         self.mouse_pos.0 >= pos.0 && self.mouse_pos.1 >= pos.1
-            && self.mouse_pos.0 < pos.0 + size.0 as i32
-            && self.mouse_pos.1 < pos.1 + (size.1 / 3) as i32
+            && self.mouse_pos.0 < pos.0 + size.0
+            && self.mouse_pos.1 < pos.1 + size.1
     }
 }
 

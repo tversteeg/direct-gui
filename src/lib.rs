@@ -33,7 +33,7 @@
 //! let mut gui = Gui::new(screen_size);
 //!
 //! // Load the sprite of a button
-//! let button_img = gui.load_sprite_from_file("examples/button.png", 0xFF00FF).unwrap();
+//! let button_img = gui.load_sprite_from_file("examples/button.png", Color::from_u32(0xFF00FF)).unwrap();
 //!
 //! // Create a new button using the sprite loaded before at pixel (20, 10)
 //! gui.register(Button::new(button_img).pos(20, 10));
@@ -58,7 +58,7 @@ use std::error::Error;
 pub mod controls;
 mod resources;
 
-use blit::*;
+pub use blit::Color;
 
 use controls::*;
 use resources::*;
