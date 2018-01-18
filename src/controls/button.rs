@@ -1,4 +1,4 @@
-use blit::{BlitBuffer, Color};
+use blit::Color;
 
 use super::*;
 
@@ -32,7 +32,9 @@ pub struct Button<S> {
     show: S,
 
     pos: (i32, i32),
-    state: ButtonState
+    state: ButtonState,
+
+    state_changed: Box<FnMut() -> ButtonState>
 }
 
 impl<S> Button<S> {
@@ -55,6 +57,13 @@ impl<S> Button<S> {
             _ => false
         }
     }
+
+    /// Set the event to a closure which will be called if the button state changes.
+    pub fn on_state_changed<F: 'static FnMut() -> ButtonState>(mut self, mut func: F) -> Self {
+        self.state_changed = Box::new(func);
+
+        self
+    }
 }
 
 impl Button<Flat> {
@@ -73,7 +82,9 @@ impl Button<Flat> {
 }
 
 impl Control for Button<Flat> {
-    fn update(&mut self, args: &ControlState, res: &Resources) {
+    fn update(&mut self, args: &ControlState, _res: &Resources) {
+        let prev_state = self.state;
+
         if !args.mouse_collision(self.pos, self.show.size) {
             self.state = ButtonState::Normal;
         } else {
@@ -81,6 +92,10 @@ impl Control for Button<Flat> {
                 true => ButtonState::Pressed,
                 false => ButtonState::Hover
             };
+        }
+
+        if prev_state != self.state {
+            self.state_changed();
         }
     }
 
@@ -95,15 +110,19 @@ impl Control for Button<Flat> {
 
         for y in self.pos.1..self.pos.1 + self.show.size.1 {
             for x in self.pos.0..self.pos.0 + self.show.size.0 {
-                if x == self.pos.0 || x == self.pos.0 + self.show.size.0 - 1 {
-                    buffer[x as usize + y as usize * buffer_width] = 0;
-                } else if y == self.pos.1 || y == self.pos.1 + self.show.size.1 - 1 {
-                    buffer[x as usize + y as usize * buffer_width] = 0;
+                let index = x as usize + y as usize * buffer_width;
+                if x == self.pos.0 || x == self.pos.0 + self.show.size.0 - 1
+                    || y == self.pos.1 || y == self.pos.1 + self.show.size.1 - 1 {
+                    buffer[index] = 0;
                 } else {
                     buffer[x as usize + y as usize * buffer_width] = color;
                 }
             }
         }
+    }
+
+    fn control_type(&self) -> ControlType {
+        ControlType::Button
     }
 }
 
@@ -132,7 +151,8 @@ impl Button<Image> {
         Button { 
             show: img,
             pos: (0, 0),
-            state: ButtonState::Normal
+            state: ButtonState::Normal,
+            state_changed: Box::new(|| ButtonState::Normal)
         }
     }
 }
@@ -166,5 +186,9 @@ impl Control for Button<Image> {
         } as i32;
 
         sprite.blit_rect(buffer, buffer_width, self.pos, (0, height_offset, draw_size.0, draw_size.1));
+    }
+
+    fn control_type(&self) -> ControlType {
+        ControlType::Button
     }
 }

@@ -63,6 +63,9 @@ pub use blit::Color;
 use controls::*;
 use resources::*;
 
+/// A newtype used to as a reference for controls.
+pub struct ControlRef(usize);
+
 /// The main entry point.
 ///
 /// Typically a game has one instance of this struct where the resources are loaded before the main loop.
@@ -70,7 +73,8 @@ pub struct Gui {
     size: (i32, i32),
 
     resources: Resources,
-    controls: Vec<Box<Control>>
+    controls: Vec<(usize, Box<Control>)>,
+    control_ref: usize
 }
 
 impl Gui {
@@ -79,27 +83,32 @@ impl Gui {
         Gui {
             size,
             resources: Resources::new(),
-            controls: Vec::new()
+            controls: Vec::new(),
+            control_ref: 0
         }
     }
 
     /// Handle the user input and information as supplied by the windowing library.
     pub fn update(&mut self, state: &ControlState) {
-        for control in self.controls.iter_mut() {
-            control.update(state, &self.resources);
+        for control_tuple in self.controls.iter_mut() {
+            control_tuple.1.update(state, &self.resources);
         }
     }
 
     /// Draw the drawable GUI controls on a target buffer.
-    pub fn draw_to_buffer(&self, buffer: &mut Vec<u32>) {
-        for control in self.controls.iter() {
-            control.draw(buffer, self.size.0 as usize, &self.resources);
+    pub fn draw_to_buffer(&mut self, buffer: &mut Vec<u32>) {
+        for control_tuple in self.controls.iter_mut() {
+            control_tuple.1.draw(buffer, self.size.0 as usize, &self.resources);
         }
     }
 
     /// Register a control.
-    pub fn register<T: 'static + Control>(&mut self, ctrl: T) {
-        self.controls.push(Box::new(ctrl));
+    pub fn register<T: 'static + Control>(&mut self, ctrl: T) -> ControlRef {
+        self.control_ref += 1;
+
+        self.controls.push((self.control_ref, Box::new(ctrl)));
+
+        ControlRef(self.control_ref)
     }
 
     /// Load image from a path.

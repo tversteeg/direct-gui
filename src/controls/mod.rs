@@ -6,6 +6,12 @@ pub use self::text::Label;
 
 use super::resources::*;
 
+/// Enum used to check what events should happen on certain controls.
+pub enum ControlType {
+    Button,
+    Label
+}
+
 /// Data that needs to be supplied to the `update` function.
 pub struct ControlState {
     /// The position of the mouse cursor. Is not required to be inside the bounds of the screen.
@@ -38,4 +44,7 @@ pub trait Control {
 
     /// Draw the control on the output buffer.
     fn draw(&self, buffer: &mut Vec<u32>, buffer_width: usize, res: &Resources);
+
+    /// Retrieve what type of control this is.
+    fn control_type(&self) -> ControlType;
 }

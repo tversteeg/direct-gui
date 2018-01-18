@@ -1,5 +1,3 @@
-use blit::BlitBuffer;
-
 use super::*;
 
 /// A text label widget using a font resource to render the text.
@@ -40,6 +38,7 @@ impl Label {
         self
     }
 
+    /// Update the text of the label.
     pub fn set_text(&mut self, text: &str) {
         self.text = String::from(text);
     }
@@ -49,5 +48,9 @@ impl Control for Label {
     fn update(&mut self, args: &ControlState, res: &Resources) { }
 
     fn draw(&self, buffer: &mut Vec<u32>, buffer_width: usize, res: &Resources) {
+    }
+
+    fn control_type(&self) -> ControlType {
+        ControlType::Label
     }
 }
