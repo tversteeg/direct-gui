@@ -10,6 +10,10 @@ use blit::Color;
 const WIDTH: usize = 200;
 const HEIGHT: usize = 50;
 
+fn on_button_state_changed<S>(button: &mut Button<S>, state: ButtonState) {
+    println!("Button at position {:?} state changed to {:?}", button.pos(), state);
+}
+
 fn main() {
     let mut buffer: Vec<u32> = vec![0x222222; WIDTH * HEIGHT];
 
@@ -18,8 +22,8 @@ fn main() {
     let mut gui = Gui::new((WIDTH as i32, HEIGHT as i32));
 
     let button_img = gui.load_sprite_from_file("examples/button.png", Color::from_u32(0xFF00FF)).unwrap();
-    gui.register(Button::new_with_sprite(button_img).pos(20, 10));
-    gui.register(Button::new((80, 30), Color::from_u32(0xFF0000)).pos(100, 10));
+    gui.register(Button::new_with_sprite(button_img).with_pos(20, 10).with_callback(on_button_state_changed));
+    gui.register(Button::new((80, 30), Color::from_u32(0xFF0000)).with_pos(100, 10).with_callback(on_button_state_changed));
     //gui.register(Label::new(button_img).pos(100, 10).text("This is a label"));
 
     while window.is_open() && !window.is_key_down(Key::Escape) {

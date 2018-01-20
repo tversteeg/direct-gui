@@ -16,17 +16,19 @@ pub struct Image {
 }
 
 /// In what state the button currently is in as determined by the `update` function.
-#[derive(Debug)]
-enum ButtonState {
+#[derive(Debug, Copy, Clone, Eq, PartialEq)]
+pub enum ButtonState {
+    /// The mouse is not hovering over the button and it's not pressed.
     Normal,
+    /// The mouse is hovering over the button but it's not pressed.
     Hover,
+    /// The mouse is hovering over the button and it's pressed.
     Pressed
 }
 
 /// A button widget that can be rendered in multiple ways:
 /// `Flat`: using a simpel pixel rectangle algorithm.
 /// `Image`: using a spritesheet divided into 3 parts for rendering its state.
-#[derive(Debug)]
 pub struct Button<S> {
     /// How the button is rendered (`Flat` or `Image`).
     show: S,
@@ -34,12 +36,17 @@ pub struct Button<S> {
     pos: (i32, i32),
     state: ButtonState,
 
-    state_changed: Box<FnMut() -> ButtonState>
+    state_changed: fn(&mut Button<S>, ButtonState)
 }
 
 impl<S> Button<S> {
+    /// Retrieve the position.
+    pub fn pos(&self) -> (i32, i32) {
+        self.pos
+    }
+
     /// Map a position.
-    pub fn pos(mut self, x: i32, y: i32) -> Self {
+    pub fn with_pos(mut self, x: i32, y: i32) -> Self {
         self.pos = (x, y);
 
         self
@@ -51,7 +58,7 @@ impl<S> Button<S> {
     }
 
     /// Get if the button is currently pressed.
-    pub fn is_pressed(&self) -> bool {
+    pub fn pressed(&self) -> bool {
         match self.state {
             ButtonState::Pressed => true,
             _ => false
@@ -59,11 +66,14 @@ impl<S> Button<S> {
     }
 
     /// Set the event to a closure which will be called if the button state changes.
-    pub fn on_state_changed<F: 'static FnMut() -> ButtonState>(mut self, mut func: F) -> Self {
-        self.state_changed = Box::new(func);
+    pub fn with_callback(mut self, func: fn(&mut Button<S>, ButtonState)) -> Self {
+        self.state_changed = func;
 
         self
     }
+
+    /// An empty function so the callback doesn't has to be bound.
+    fn empty_state_changed_callback(_: &mut Button<S>, _: ButtonState) {}
 }
 
 impl Button<Flat> {
@@ -76,7 +86,8 @@ impl Button<Flat> {
         Button { 
             show,
             pos: (0, 0),
-            state: ButtonState::Normal
+            state: ButtonState::Normal,
+            state_changed: Button::empty_state_changed_callback
         }
     }
 }
@@ -95,7 +106,8 @@ impl Control for Button<Flat> {
         }
 
         if prev_state != self.state {
-            self.state_changed();
+            let state = self.state;
+            (self.state_changed)(self, state);
         }
     }
 
@@ -152,13 +164,15 @@ impl Button<Image> {
             show: img,
             pos: (0, 0),
             state: ButtonState::Normal,
-            state_changed: Box::new(|| ButtonState::Normal)
+            state_changed: Button::empty_state_changed_callback
         }
     }
 }
 
 impl Control for Button<Image> {
     fn update(&mut self, args: &ControlState, res: &Resources) {
+        let prev_state = self.state;
+
         let sprite = res.get_sprite(self.show.sprite_ref).unwrap();
 
         let mut real_size = sprite.size();
@@ -170,6 +184,11 @@ impl Control for Button<Image> {
                 true => ButtonState::Pressed,
                 false => ButtonState::Hover
             };
+        }
+
+        if prev_state != self.state {
+            let state = self.state;
+            (self.state_changed)(self, state);
         }
     }
 

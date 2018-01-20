@@ -1,7 +1,7 @@
 mod button;
 mod text;
 
-pub use self::button::Button;
+pub use self::button::{Button, ButtonState};
 pub use self::text::Label;
 
 use super::resources::*;
