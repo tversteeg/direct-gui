@@ -60,3 +60,7 @@ gui.update(&cs);
 // Finally render the current gui state to the buffer
 gui.draw_to_buffer(&mut buffer);
 ```
+
+## Credits
+
+Default font by [usr_share](https://opengameart.org/content/the-collection-of-8-bit-fonts-for-grafx2-r2)
