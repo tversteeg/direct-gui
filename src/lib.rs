@@ -57,9 +57,11 @@ use std::error::Error;
 
 pub mod controls;
 mod resources;
+mod font;
 
 pub use blit::Color;
 
+pub use font::FontSettings;
 use controls::*;
 use resources::*;
 
@@ -119,5 +121,15 @@ impl Gui {
     /// Returns a reference to the image.
     pub fn load_sprite_from_file<P>(&mut self, path: P, mask_color: Color) -> Result<SpriteRef, Box<Error>> where P: AsRef<Path> {
         self.resources.load_sprite_from_file(path, mask_color)
+    }
+
+    /// Load font image from a path.
+    ///
+    /// The mask color is the color that will be used as alpha in the sprite, a common color to use
+    /// for this is `0xFF00FF`.
+    ///
+    /// Returns a reference to the font.
+    pub fn load_font_sprite_from_file<P>(&mut self, path: P, settings: FontSettings) -> Result<FontRef, Box<Error>> where P: AsRef<Path> {
+        self.resources.load_font_sprite_from_file(path, settings)
     }
 }

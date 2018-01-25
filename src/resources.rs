@@ -4,6 +4,8 @@ use std::fmt;
 use std::path::Path;
 use std::error::Error;
 
+use font::*;
+
 /// An error type for when a image has the wrong extension.
 #[derive(Debug, Clone)]
 pub struct InvalidImageFormat;
@@ -24,15 +26,19 @@ impl Error for InvalidImageFormat {
     }
 }
 
-/// A newtype for handling objects externally by reference.
+/// A newtype for handling sprites objects externally by reference.
 #[derive(Debug, Copy, Clone, Eq, PartialEq)]
 pub struct SpriteRef(usize);
+
+/// A newtype for handling font objects externally by reference.
+#[derive(Debug, Copy, Clone, Eq, PartialEq)]
+pub struct FontRef(usize);
 
 /// A internal handler of static resources such as sprites and fonts.
 #[derive(Debug)]
 pub struct Resources {
     sprites: Vec<BlitBuffer>,
-    fonts: Vec<BlitBuffer>
+    fonts: Vec<Font>
 }
 
 impl Resources {
@@ -68,7 +74,29 @@ impl Resources {
         }
     }
 
-    fn load_blitbuffer(path: &Path, mask_color: Color) -> Result<BlitBuffer, Box<Error>> {
+    /// Load font image from a path. Accepts both PNG & BlitBuffer images which should have the `.png`
+    /// and `.blit` extension respectively.
+    ///
+    /// Returns a reference to the font.
+    pub fn load_font_sprite_from_file<P>(&mut self, path: P, settings: FontSettings) -> Result<FontRef, Box<Error>> where P: AsRef<Path> {
+        let index = self.fonts.len();
+
+        let buffer = Resources::load_blitbuffer(path.as_ref(), settings.mask_color)?;
+        self.fonts.push(Font::new(buffer, settings));
+
+        Ok(FontRef(index))
+    }
+
+    /// Retrieves the font if it exists.
+    pub fn get_font(&self, font_ref: FontRef) -> Option<&Font> {
+        if font_ref.0 < self.fonts.len() {
+            Some(&self.fonts[font_ref.0])
+        } else {
+            None
+        }
+    }
+
+    pub fn load_blitbuffer(path: &Path, mask_color: Color) -> Result<BlitBuffer, Box<Error>> {
         let ext = path.extension().and_then(|s| s.to_str()).map_or("".to_string(), |s| s.to_ascii_lowercase());
 
         let buffer = match &ext[..] {

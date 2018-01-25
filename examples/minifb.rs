@@ -24,6 +24,13 @@ fn main() {
     let button_img = gui.load_sprite_from_file("examples/button.png", Color::from_u32(0xFF00FF)).unwrap();
     gui.register(Button::new_with_sprite(button_img).with_pos(20, 10).with_callback(on_button_state_changed));
     gui.register(Button::new((80, 30), Color::from_u32(0xFF0000)).with_pos(100, 10).with_callback(on_button_state_changed));
+
+    let font = gui.load_font_sprite_from_file("assets/TorusSans.png", FontSettings {
+        start: '!',
+        chars: '~' as u8 - '!' as u8,
+        char_size: (8, 8),
+        mask_color: Color::from_u32(0xFF00FF)
+    });
     //gui.register(Label::new(button_img).pos(100, 10).text("This is a label"));
 
     while window.is_open() && !window.is_key_down(Key::Escape) {
