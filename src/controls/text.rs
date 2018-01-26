@@ -2,7 +2,7 @@ use super::*;
 
 /// A text label widget using a font resource to render the text.
 pub struct Label {
-    font_ref: usize,
+    font_ref: FontRef,
 
     pos: (i32, i32),
 
@@ -11,7 +11,7 @@ pub struct Label {
 
 impl Label {
     /// Create a new label for rendering of static text.
-    pub fn new(font_ref: usize) -> Self {
+    pub fn new(font_ref: FontRef) -> Self {
         Label { 
             font_ref,
             pos: (0, 0),
@@ -45,9 +45,12 @@ impl Label {
 }
 
 impl Control for Label {
-    fn update(&mut self, args: &ControlState, res: &Resources) { }
+    fn update(&mut self, _args: &ControlState, _res: &Resources) { }
 
     fn draw(&self, buffer: &mut Vec<u32>, buffer_width: usize, res: &Resources) {
+        let font = res.get_font(self.font_ref).unwrap();
+
+        font.draw_string(buffer, buffer_width, &self.text, self.pos);
     }
 
     fn control_type(&self) -> ControlType {

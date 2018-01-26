@@ -7,7 +7,7 @@ use direct_gui::controls::*;
 use minifb::*;
 use blit::Color;
 
-const WIDTH: usize = 200;
+const WIDTH: usize = 400;
 const HEIGHT: usize = 50;
 
 fn on_button_state_changed<S>(button: &mut Button<S>, state: ButtonState) {
@@ -22,16 +22,16 @@ fn main() {
     let mut gui = Gui::new((WIDTH as i32, HEIGHT as i32));
 
     let button_img = gui.load_sprite_from_file("examples/button.png", Color::from_u32(0xFF00FF)).unwrap();
-    gui.register(Button::new_with_sprite(button_img).with_pos(20, 10).with_callback(on_button_state_changed));
-    gui.register(Button::new((80, 30), Color::from_u32(0xFF0000)).with_pos(100, 10).with_callback(on_button_state_changed));
+    gui.register(Button::new_with_sprite(button_img).with_pos(10, 10).with_callback(on_button_state_changed));
+    gui.register(Button::new((30, 30), Color::from_u32(0xFF0000)).with_pos(80, 10).with_callback(on_button_state_changed));
 
     let font = gui.load_font_sprite_from_file("assets/TorusSans.png", FontSettings {
         start: '!',
-        chars: '~' as u8 - '!' as u8,
-        char_size: (8, 8),
-        mask_color: Color::from_u32(0xFF00FF)
-    });
-    //gui.register(Label::new(button_img).pos(100, 10).text("This is a label"));
+        char_size: (9, 9),
+        leading_offset: 2,
+        mask_color: Color::from_u32(0xFC00FC)
+    }).unwrap();
+    gui.register(Label::new(font).pos(120, 10).text("This is a label\nwith a line break."));
 
     while window.is_open() && !window.is_key_down(Key::Escape) {
         let mut cs = ControlState {
