@@ -1,7 +1,5 @@
 use blit::{Color, BlitBuffer};
 
-use resources::Resources;
-
 #[derive(Debug, Copy, Clone)]
 pub struct FontSettings {
     pub start: char,

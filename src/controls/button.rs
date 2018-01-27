@@ -111,7 +111,7 @@ impl Control for Button<Flat> {
         }
     }
 
-    fn draw(&self, buffer: &mut Vec<u32>, buffer_width: usize, res: &Resources) {
+    fn draw(&self, buffer: &mut Vec<u32>, buffer_width: usize, _res: &Resources) {
         let mut color = self.show.color.u32();
 
         match self.state {

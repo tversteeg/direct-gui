@@ -13,6 +13,8 @@ repository = "https://github.com/tversteeg/direct-gui.git"
 keywords = ["gui", "gamedev"]
 categories = ["gui", "rendering", "game-engines", "multimedia"]
 
+build = "build.rs"
+
 [badges]
 travis-ci = {repository = "tversteeg/direct-gui"}
 
@@ -21,8 +23,16 @@ blit = "0.4"
 image = "0.18"
 
 [[example]]
-name = "minifb"
-path = "examples/minifb.rs"
+name = "button"
+path = "examples/button.rs"
+
+[[example]]
+name = "label"
+path = "examples/label.rs"
 
 [dev-dependencies]
 minifb = "0.10"
+
+[build-dependencies]
+blit = "0.4"
+image = "0.18"

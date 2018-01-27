@@ -113,6 +113,12 @@ impl Gui {
         ControlRef(self.control_ref)
     }
 
+    /// Return the default font loaded from the `assets/` folder and parsed by `build.rs`. Which is
+    /// always the first item added to the fonts array.
+    pub fn default_font(&self) -> FontRef {
+        self.resources.default_font()
+    }
+
     /// Load image from a path.
     ///
     /// The mask color is the color that will be used as alpha in the sprite, a common color to use

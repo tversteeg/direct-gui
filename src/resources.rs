@@ -43,10 +43,28 @@ pub struct Resources {
 
 impl Resources {
     pub fn new() -> Self {
+        let mut fonts = Vec::new();
+
+        // Load the default font
+        let default_font_buffer = BlitBuffer::from_memory(include_bytes!("../resources/ArtosSans.png.blit")).unwrap();
+
+        let default_font_settings = FontSettings {
+            start: '!',
+            char_size: (9, 9),
+            leading_offset: 2,
+            mask_color: Color::from_u32(0xFF00FF)
+        };
+        fonts.push(Font::new(default_font_buffer, default_font_settings));
+
         Resources {
-            sprites: Vec::new(),
-            fonts: Vec::new(),
+            fonts,
+            sprites: Vec::new()
         }
+    }
+
+    /// Return the default font loaded from the `assets/` folder and parsed by `build.rs`.
+    pub fn default_font(&self) -> FontRef {
+        FontRef(0)
     }
 
     /// Load image from a path. Accepts both PNG & BlitBuffer images which should have the `.png`
@@ -110,7 +128,7 @@ impl Resources {
 
                 rgb.to_blit_buffer(mask_color)
             },
-            format => return Err(Box::new(InvalidImageFormat))
+            _ => return Err(Box::new(InvalidImageFormat))
         };
 
         Ok(buffer)
