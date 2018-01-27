@@ -7,7 +7,7 @@ use direct_gui::controls::*;
 use minifb::*;
 use blit::Color;
 
-const WIDTH: usize = 400;
+const WIDTH: usize = 120;
 const HEIGHT: usize = 50;
 
 fn on_button_state_changed<S>(button: &mut Button<S>, state: ButtonState) {
@@ -17,7 +17,7 @@ fn on_button_state_changed<S>(button: &mut Button<S>, state: ButtonState) {
 fn main() {
     let mut buffer: Vec<u32> = vec![0x222222; WIDTH * HEIGHT];
 
-    let mut window = Window::new("direct-gui example - ESC to exit", WIDTH, HEIGHT, WindowOptions::default()).expect("Unable to open window");
+    let mut window = Window::new("direct-gui button example - ESC to exit", WIDTH, HEIGHT, WindowOptions::default()).expect("Unable to open window");
 
     let mut gui = Gui::new((WIDTH as i32, HEIGHT as i32));
 

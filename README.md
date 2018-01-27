@@ -20,15 +20,17 @@ And this to your crate root:
 extern crate direct_gui;
 ```
 
-### Run the example
+### Run the examples
 
 On Linux you need the `xorg-dev` package as required by `minifb` -- `sudo apt install xorg-dev`
 
-    cargo run --example minifb
+    cargo run --example button
 
-This should produce the following window:
+![Example](img/example-button.png?raw=true)
 
-![Example](img/example.png?raw=true)
+    cargo run --example label
+
+![Example](img/example-label.png?raw=true)
 
 ## Examples
 
