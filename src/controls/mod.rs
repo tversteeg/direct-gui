@@ -4,6 +4,8 @@ mod text;
 pub use self::button::{Button, ButtonState};
 pub use self::text::Label;
 
+use std::any::Any;
+
 use super::resources::*;
 
 /// Enum used to check what events should happen on certain controls.
@@ -47,4 +49,7 @@ pub trait Control {
 
     /// Retrieve what type of control this is.
     fn control_type(&self) -> ControlType;
+
+    /// For downcasting.
+    fn as_any(&self) -> &Any;
 }

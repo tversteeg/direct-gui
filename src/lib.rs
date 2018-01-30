@@ -52,6 +52,7 @@
 extern crate blit;
 extern crate image;
 
+use std::fmt;
 use std::path::Path;
 use std::error::Error;
 
@@ -65,7 +66,29 @@ pub use font::FontSettings;
 use controls::*;
 use resources::*;
 
+/// An error type for when a reference is not valid anymore.
+#[derive(Debug, Clone)]
+pub struct InvalidControlReference;
+
+impl fmt::Display for InvalidControlReference {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "reference to control object doesn't exist anymore")
+    }
+}
+
+impl Error for InvalidControlReference {
+    fn description(&self) -> &str {
+        "reference to control object doesn't exist anymore"
+    }
+
+    fn cause(&self) -> Option<&Error> {
+        None
+    }
+}
+
+
 /// A newtype used to as a reference for controls.
+#[derive(Debug, Copy, Clone, Eq, PartialEq)]
 pub struct ControlRef(usize);
 
 /// The main entry point.
@@ -75,7 +98,7 @@ pub struct Gui {
     size: (i32, i32),
 
     resources: Resources,
-    controls: Vec<(usize, Box<Control>)>,
+    controls: Vec<(ControlRef, Box<Control>)>,
     control_ref: usize
 }
 
@@ -108,10 +131,38 @@ impl Gui {
     pub fn register<T: 'static + Control>(&mut self, ctrl: T) -> ControlRef {
         self.control_ref += 1;
 
-        self.controls.push((self.control_ref, Box::new(ctrl)));
+        self.controls.push((ControlRef(self.control_ref), Box::new(ctrl)));
 
         ControlRef(self.control_ref)
     }
+
+    /// Retrieve a control by reference.
+    pub fn get<T: 'static + Control>(&self, control_ref: ControlRef) -> Result<&T, Box<Error>> {
+        match self.controls.iter().find(|&c| c.0 == control_ref) {
+            Some(c) => {
+                match c.1.as_any().downcast_ref::<T>() {
+                    Some(obj) => Ok(obj),
+                    None => Err(Box::new(InvalidControlReference))
+                }
+            },
+            None => Err(Box::new(InvalidControlReference))
+        }
+    }
+
+    /*
+    /// Retrieve a control by mutable reference.
+    pub fn get_mut<T: 'static + Control>(&mut self, control_ref: ControlRef) -> Result<&mut T, Box<Error>> {
+        match self.controls.iter_mut().find(|&c| c.0 == control_ref) {
+            Some(mut c) => {
+                match c.1.as_any().downcast_mut::<T>() {
+                    Some(obj) => Ok(obj),
+                    None => Err(Box::new(InvalidControlReference))
+                }
+            },
+            None => Err(Box::new(InvalidControlReference))
+        }
+    }
+    */
 
     /// Return the default font loaded from the `assets/` folder and parsed by `build.rs`. Which is
     /// always the first item added to the fonts array.

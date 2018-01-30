@@ -56,4 +56,8 @@ impl Control for Label {
     fn control_type(&self) -> ControlType {
         ControlType::Label
     }
+
+    fn as_any(&self) -> &Any {
+        self
+    }
 }

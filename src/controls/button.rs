@@ -136,6 +136,10 @@ impl Control for Button<Flat> {
     fn control_type(&self) -> ControlType {
         ControlType::Button
     }
+
+    fn as_any(&self) -> &Any {
+        self
+    }
 }
 
 impl Button<Image> {
@@ -209,5 +213,9 @@ impl Control for Button<Image> {
 
     fn control_type(&self) -> ControlType {
         ControlType::Button
+    }
+
+    fn as_any(&self) -> &Any {
+        self
     }
 }

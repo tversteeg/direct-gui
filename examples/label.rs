@@ -26,7 +26,7 @@ fn main() {
         leading_offset: 2,
         mask_color: Color::from_u32(0xFF00FF)
     }).unwrap();
-    gui.register(Label::new(font).pos(10, 50).text("This is a label with a custom font."));
+    gui.register(Label::new(font).pos(10, 40).text("This is a label with a custom font."));
 
     let font = gui.load_font_sprite_from_file("assets/TorusSansGradient.png", FontSettings {
         start: '!',
@@ -34,7 +34,12 @@ fn main() {
         leading_offset: 2,
         mask_color: Color::from_u32(0xFF00FF)
     }).unwrap();
-    gui.register(Label::new(font).pos(10, 80).text("This is a label with a custom font\nand fancy colors."));
+    gui.register(Label::new(font).pos(10, 60).text("This is a label with a custom font\nand fancy colors."));
+
+    let label_ref = gui.register(Label::new(default_font).pos(10, 100).text("This label will be updated."));
+    {
+        let label = gui.get::<Label>(label_ref);
+    }
 
     while window.is_open() && !window.is_key_down(Key::Escape) {
         gui.draw_to_buffer(&mut buffer);
