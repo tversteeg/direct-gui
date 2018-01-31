@@ -19,8 +19,13 @@ impl Label {
         }
     }
 
+    /// Get the position.
+    pub fn pos(&self) -> (i32, i32) {
+        self.pos
+    }
+
     /// Map a position.
-    pub fn pos(mut self, x: i32, y: i32) -> Self {
+    pub fn with_pos(mut self, x: i32, y: i32) -> Self {
         self.pos = (x, y);
 
         self
@@ -31,8 +36,13 @@ impl Label {
         self.pos = (x, y);
     }
 
+    /// Get the text.
+    pub fn text(&self) -> &String {
+        &self.text
+    }
+
     /// Map the label text.
-    pub fn text(mut self, text: &str) -> Self {
+    pub fn with_text(mut self, text: &str) -> Self {
         self.text = String::from(text);
 
         self
@@ -58,6 +68,10 @@ impl Control for Label {
     }
 
     fn as_any(&self) -> &Any {
+        self
+    }
+
+    fn as_any_mut(&mut self) -> &mut Any {
         self
     }
 }

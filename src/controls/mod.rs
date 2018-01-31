@@ -52,4 +52,7 @@ pub trait Control {
 
     /// For downcasting.
     fn as_any(&self) -> &Any;
+
+    /// For downcasting.
+    fn as_any_mut(&mut self) -> &mut Any;
 }

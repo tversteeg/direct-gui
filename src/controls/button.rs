@@ -140,6 +140,10 @@ impl Control for Button<Flat> {
     fn as_any(&self) -> &Any {
         self
     }
+
+    fn as_any_mut(&mut self) -> &mut Any {
+        self
+    }
 }
 
 impl Button<Image> {
@@ -216,6 +220,10 @@ impl Control for Button<Image> {
     }
 
     fn as_any(&self) -> &Any {
+        self
+    }
+
+    fn as_any_mut(&mut self) -> &mut Any {
         self
     }
 }

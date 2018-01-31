@@ -149,12 +149,11 @@ impl Gui {
         }
     }
 
-    /*
     /// Retrieve a control by mutable reference.
     pub fn get_mut<T: 'static + Control>(&mut self, control_ref: ControlRef) -> Result<&mut T, Box<Error>> {
-        match self.controls.iter_mut().find(|&c| c.0 == control_ref) {
-            Some(mut c) => {
-                match c.1.as_any().downcast_mut::<T>() {
+        match self.controls.iter_mut().find(|ref mut c| c.0 == control_ref) {
+            Some(c) => {
+                match c.1.as_any_mut().downcast_mut::<T>() {
                     Some(obj) => Ok(obj),
                     None => Err(Box::new(InvalidControlReference))
                 }
@@ -162,7 +161,6 @@ impl Gui {
             None => Err(Box::new(InvalidControlReference))
         }
     }
-    */
 
     /// Return the default font loaded from the `assets/` folder and parsed by `build.rs`. Which is
     /// always the first item added to the fonts array.
