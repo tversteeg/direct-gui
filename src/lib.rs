@@ -63,6 +63,7 @@ mod font;
 pub use blit::Color;
 
 pub use font::FontSettings;
+pub use resources::{SpriteRef, FontRef};
 use controls::*;
 use resources::*;
 
