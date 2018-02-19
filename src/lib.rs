@@ -86,7 +86,6 @@ impl Error for InvalidControlReference {
     }
 }
 
-
 /// A newtype used to as a reference for controls.
 #[derive(Debug, Copy, Clone, Eq, PartialEq)]
 pub struct ControlRef(usize);
