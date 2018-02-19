@@ -178,6 +178,11 @@ impl Gui {
         self.resources.load_sprite_from_file(path, mask_color)
     }
 
+    /// Load image from serialized memory. Returns a reference to the image.
+    pub fn load_sprite_from_memory(&mut self, buffer: &[u8]) -> Result<SpriteRef, Box<Error>> {
+        self.resources.load_sprite_from_memory(buffer)
+    }
+
     /// Load font image from a path.
     ///
     /// The mask color is the color that will be used as alpha in the sprite, a common color to use
@@ -186,5 +191,10 @@ impl Gui {
     /// Returns a reference to the font.
     pub fn load_font_sprite_from_file<P>(&mut self, path: P, settings: FontSettings) -> Result<FontRef, Box<Error>> where P: AsRef<Path> {
         self.resources.load_font_sprite_from_file(path, settings)
+    }
+
+    /// Load image from serialized memory. Returns a reference to the image.
+    pub fn load_font_sprite_from_memory(&mut self, buffer: &[u8], settings: FontSettings) -> Result<FontRef, Box<Error>> {
+        self.resources.load_font_sprite_from_memory(buffer, settings)
     }
 }

@@ -83,6 +83,16 @@ impl Resources {
         Ok(SpriteRef(index))
     }
 
+    /// Load image from serialized memory.
+    pub fn load_sprite_from_memory(&mut self, buffer: &[u8]) -> Result<SpriteRef, Box<Error>> {
+        let index = self.sprites.len();
+
+        let blitbuffer = BlitBuffer::from_memory(buffer)?;
+        self.sprites.push(blitbuffer);
+
+        Ok(SpriteRef(index))
+    }
+
     /// Retrieves the sprite if it exists.
     pub fn get_sprite(&self, sprite_ref: SpriteRef) -> Option<&BlitBuffer> {
         if sprite_ref.0 < self.sprites.len() {
@@ -101,6 +111,16 @@ impl Resources {
 
         let buffer = Resources::load_blitbuffer(path.as_ref(), settings.mask_color)?;
         self.fonts.push(Font::new(buffer, settings));
+
+        Ok(FontRef(index))
+    }
+
+    /// Load image from serialized memory.
+    pub fn load_font_sprite_from_memory(&mut self, buffer: &[u8], settings: FontSettings) -> Result<FontRef, Box<Error>> {
+        let index = self.sprites.len();
+
+        let blitbuffer = BlitBuffer::from_memory(buffer)?;
+        self.fonts.push(Font::new(blitbuffer, settings));
 
         Ok(FontRef(index))
     }
