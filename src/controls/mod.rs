@@ -1,7 +1,7 @@
 mod button;
 mod text;
 
-pub use self::button::{Button, ButtonState};
+pub use self::button::{Button, ButtonState, Image, Flat};
 pub use self::text::Label;
 
 use std::any::Any;
