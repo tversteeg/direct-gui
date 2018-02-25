@@ -7,8 +7,10 @@ use direct_gui::controls::*;
 use minifb::*;
 use blit::Color;
 
+use std::str::FromStr;
+
 const WIDTH: usize = 400;
-const HEIGHT: usize = 120;
+const HEIGHT: usize = 160;
 
 fn main() {
     let mut buffer: Vec<u32> = vec![0x222222; WIDTH * HEIGHT];
@@ -45,6 +47,8 @@ fn main() {
 
     while window.is_open() && !window.is_key_down(Key::Escape) {
         gui.draw_to_buffer(&mut buffer);
+
+        gui.draw_label(&mut buffer, font, &String::from_str("This label is not registered and\nis drawn directly every frame.").unwrap(), (10, 120));
 
         window.update_with_buffer(&buffer).unwrap();
     }

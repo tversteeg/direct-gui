@@ -127,6 +127,13 @@ impl Gui {
         }
     }
 
+    /// Draw a label a single frame.
+    pub fn draw_label(&mut self, buffer: &mut Vec<u32>, font_ref: FontRef, string: &String, pos: (i32, i32)) {
+        let font = self.resources.get_font(font_ref).unwrap();
+
+        font.draw_string(buffer, self.size.0 as usize, string, pos);
+    }
+
     /// Register a control.
     pub fn register<T: 'static + Control>(&mut self, ctrl: T) -> ControlRef {
         self.control_ref += 1;
