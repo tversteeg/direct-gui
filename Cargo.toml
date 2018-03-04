@@ -1,6 +1,6 @@
 [package]
 name = "direct-gui"
-version = "0.1.17"
+version = "0.1.18"
 authors = ["Thomas Versteeg <thomasversteeg@gmx.com>"]
 license = "GPL-3.0"
 homepage = "https://github.com/tversteeg/direct-gui"
@@ -19,7 +19,7 @@ build = "build.rs"
 travis-ci = {repository = "tversteeg/direct-gui"}
 
 [dependencies]
-blit = "0.4"
+blit = "0.5"
 image = "0.18"
 
 [[example]]
@@ -34,5 +34,5 @@ path = "examples/label.rs"
 minifb = "0.10"
 
 [build-dependencies]
-blit = "0.4"
+blit = "0.5"
 image = "0.18"
