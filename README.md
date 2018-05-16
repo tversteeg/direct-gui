@@ -69,4 +69,6 @@ gui.draw_to_buffer(&mut buffer);
 
 ## Credits
 
+Sprite feature by [Hammster](https://github.com/hammster)
+
 Default font by [usr_share](https://opengameart.org/content/the-collection-of-8-bit-fonts-for-grafx2-r2)
