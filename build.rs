@@ -13,12 +13,7 @@ fn save_blit_buffer_from_image(name: &str, mask_color: u32) {
     println!("Converting image \"{}\" to blit buffer", path);
 
     let img = image::open(path).unwrap();
-    let img_as_rgb8 = match img.as_rgb8() {
-        Some(i) => i,
-        None => panic!("Could not convert image to RGB8 format")
-    };
-
-    let blit_buf = img_as_rgb8.to_blit_buffer(Color::from_u32(mask_color));
+    let blit_buf = blit_buffer(&img, Color::from_u32(mask_color));
 
     blit_buf.save(format!("resources/{}.blit", name)).unwrap();
 }

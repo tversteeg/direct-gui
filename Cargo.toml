@@ -20,7 +20,7 @@ travis-ci = {repository = "tversteeg/direct-gui"}
 
 [dependencies]
 blit = "0.5"
-image = "0.18"
+image = "0.19"
 
 [[example]]
 name = "button"
@@ -35,4 +35,4 @@ minifb = "0.10"
 
 [build-dependencies]
 blit = "0.5"
-image = "0.18"
+image = "0.19"
