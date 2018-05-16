@@ -1,8 +1,10 @@
 mod button;
 mod text;
+mod sprite;
 
 pub use self::button::{Button, ButtonState, Image, Flat};
 pub use self::text::Label;
+pub use self::sprite::Sprite;
 
 use std::any::Any;
 
@@ -11,7 +13,8 @@ use super::resources::*;
 /// Enum used to check what events should happen on certain controls.
 pub enum ControlType {
     Button,
-    Label
+    Label,
+    Sprite
 }
 
 /// Data that needs to be supplied to the `update` function.

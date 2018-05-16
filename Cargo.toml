@@ -1,6 +1,6 @@
 [package]
 name = "direct-gui"
-version = "0.1.18"
+version = "0.1.19"
 authors = ["Thomas Versteeg <thomasversteeg@gmx.com>"]
 license = "GPL-3.0"
 homepage = "https://github.com/tversteeg/direct-gui"
@@ -29,6 +29,10 @@ path = "examples/button.rs"
 [[example]]
 name = "label"
 path = "examples/label.rs"
+
+[[example]]
+name = "sprite"
+path = "examples/sprite.rs"
 
 [dev-dependencies]
 minifb = "0.10"

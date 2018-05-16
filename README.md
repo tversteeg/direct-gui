@@ -32,6 +32,10 @@ On Linux you need the `xorg-dev` package as required by `minifb` -- `sudo apt in
 
 ![Example](img/example-label.png?raw=true)
 
+    cargo run --example sprite
+
+![Example](img/example-sprite.png?raw=true)
+
 ## Examples
 
 ```rust
