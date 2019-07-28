@@ -54,8 +54,8 @@ pub trait Control {
     fn control_type(&self) -> ControlType;
 
     /// For downcasting.
-    fn as_any(&self) -> &Any;
+    fn as_any(&self) -> &dyn Any;
 
     /// For downcasting.
-    fn as_any_mut(&mut self) -> &mut Any;
+    fn as_any_mut(&mut self) -> &mut dyn Any;
 }

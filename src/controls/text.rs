@@ -12,7 +12,7 @@ pub struct Label {
 impl Label {
     /// Create a new label for rendering of static text.
     pub fn new(font_ref: FontRef) -> Self {
-        Label { 
+        Label {
             font_ref,
             pos: (0, 0),
             text: String::new()
@@ -67,11 +67,11 @@ impl Control for Label {
         ControlType::Label
     }
 
-    fn as_any(&self) -> &Any {
+    fn as_any(&self) -> &dyn Any {
         self
     }
 
-    fn as_any_mut(&mut self) -> &mut Any {
+    fn as_any_mut(&mut self) -> &mut dyn Any {
         self
     }
 }

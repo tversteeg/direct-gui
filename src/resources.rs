@@ -21,7 +21,7 @@ impl Error for InvalidImageFormat {
         "file format doesn't match '.png' or '.blit'"
     }
 
-    fn cause(&self) -> Option<&Error> {
+    fn cause(&self) -> Option<&dyn Error> {
         None
     }
 }
@@ -74,7 +74,7 @@ impl Resources {
     /// for this is `0xFF00FF`.
     ///
     /// Returns a reference to the image.
-    pub fn load_sprite_from_file<P>(&mut self, path: P, mask_color: Color) -> Result<SpriteRef, Box<Error>> where P: AsRef<Path> {
+    pub fn load_sprite_from_file<P>(&mut self, path: P, mask_color: Color) -> Result<SpriteRef, Box<dyn Error>> where P: AsRef<Path> {
         let index = self.sprites.len();
 
         let buffer = Resources::load_blitbuffer(path.as_ref(), mask_color)?;
@@ -84,7 +84,7 @@ impl Resources {
     }
 
     /// Load image from serialized memory.
-    pub fn load_sprite_from_memory(&mut self, buffer: &[u8]) -> Result<SpriteRef, Box<Error>> {
+    pub fn load_sprite_from_memory(&mut self, buffer: &[u8]) -> Result<SpriteRef, Box<dyn Error>> {
         let index = self.sprites.len();
 
         let blitbuffer = BlitBuffer::from_memory(buffer)?;
@@ -106,7 +106,7 @@ impl Resources {
     /// and `.blit` extension respectively.
     ///
     /// Returns a reference to the font.
-    pub fn load_font_sprite_from_file<P>(&mut self, path: P, settings: FontSettings) -> Result<FontRef, Box<Error>> where P: AsRef<Path> {
+    pub fn load_font_sprite_from_file<P>(&mut self, path: P, settings: FontSettings) -> Result<FontRef, Box<dyn Error>> where P: AsRef<Path> {
         let index = self.fonts.len();
 
         let buffer = Resources::load_blitbuffer(path.as_ref(), settings.mask_color)?;
@@ -116,7 +116,7 @@ impl Resources {
     }
 
     /// Load image from serialized memory.
-    pub fn load_font_sprite_from_memory(&mut self, buffer: &[u8], settings: FontSettings) -> Result<FontRef, Box<Error>> {
+    pub fn load_font_sprite_from_memory(&mut self, buffer: &[u8], settings: FontSettings) -> Result<FontRef, Box<dyn Error>> {
         let index = self.sprites.len();
 
         let blitbuffer = BlitBuffer::from_memory(buffer)?;
@@ -134,7 +134,7 @@ impl Resources {
         }
     }
 
-    pub fn load_blitbuffer(path: &Path, mask_color: Color) -> Result<BlitBuffer, Box<Error>> {
+    pub fn load_blitbuffer(path: &Path, mask_color: Color) -> Result<BlitBuffer, Box<dyn Error>> {
         let ext = path.extension().and_then(|s| s.to_str()).map_or("".to_string(), |s| s.to_ascii_lowercase());
 
         let buffer = match &ext[..] {

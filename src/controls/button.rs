@@ -83,7 +83,7 @@ impl Button<Flat> {
             size, color
         };
 
-        Button { 
+        Button {
             show,
             pos: (0, 0),
             state: ButtonState::Normal,
@@ -137,11 +137,11 @@ impl Control for Button<Flat> {
         ControlType::Button
     }
 
-    fn as_any(&self) -> &Any {
+    fn as_any(&self) -> &dyn Any {
         self
     }
 
-    fn as_any_mut(&mut self) -> &mut Any {
+    fn as_any_mut(&mut self) -> &mut dyn Any {
         self
     }
 }
@@ -168,7 +168,7 @@ impl Button<Image> {
             sprite_ref
         };
 
-        Button { 
+        Button {
             show: img,
             pos: (0, 0),
             state: ButtonState::Normal,
@@ -219,11 +219,11 @@ impl Control for Button<Image> {
         ControlType::Button
     }
 
-    fn as_any(&self) -> &Any {
+    fn as_any(&self) -> &dyn Any {
         self
     }
 
-    fn as_any_mut(&mut self) -> &mut Any {
+    fn as_any_mut(&mut self) -> &mut dyn Any {
         self
     }
 }

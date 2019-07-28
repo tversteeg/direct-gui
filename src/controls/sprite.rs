@@ -46,7 +46,7 @@ impl Control for Sprite {
         sprite.blit_rect(buffer, buffer_width, self.pos, (0, 0, draw_size.0, draw_size.1));
     }
 
-    fn as_any(&self) -> &Any {
+    fn as_any(&self) -> &dyn Any {
         self
     }
 
@@ -54,7 +54,7 @@ impl Control for Sprite {
         ControlType::Sprite
     }
 
-    fn as_any_mut(&mut self) -> &mut Any {
+    fn as_any_mut(&mut self) -> &mut dyn Any {
         self
     }
 }

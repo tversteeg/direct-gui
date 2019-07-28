@@ -82,7 +82,7 @@ impl Error for InvalidControlReference {
         "reference to control object doesn't exist anymore"
     }
 
-    fn cause(&self) -> Option<&Error> {
+    fn cause(&self) -> Option<&dyn Error> {
         None
     }
 }
@@ -98,7 +98,7 @@ pub struct Gui {
     size: (i32, i32),
 
     resources: Resources,
-    controls: Vec<(ControlRef, Box<Control>)>,
+    controls: Vec<(ControlRef, Box<dyn Control>)>,
     control_ref: usize
 }
 
@@ -144,7 +144,7 @@ impl Gui {
     }
 
     /// Retrieve a control by reference.
-    pub fn get<T: 'static + Control>(&self, control_ref: ControlRef) -> Result<&T, Box<Error>> {
+    pub fn get<T: 'static + Control>(&self, control_ref: ControlRef) -> Result<&T, Box<dyn Error>> {
         match self.controls.iter().find(|&c| c.0 == control_ref) {
             Some(c) => {
                 match c.1.as_any().downcast_ref::<T>() {
@@ -157,7 +157,7 @@ impl Gui {
     }
 
     /// Retrieve a control by mutable reference.
-    pub fn get_mut<T: 'static + Control>(&mut self, control_ref: ControlRef) -> Result<&mut T, Box<Error>> {
+    pub fn get_mut<T: 'static + Control>(&mut self, control_ref: ControlRef) -> Result<&mut T, Box<dyn Error>> {
         match self.controls.iter_mut().find(|c| c.0 == control_ref) {
             Some(c) => {
                 match c.1.as_any_mut().downcast_mut::<T>() {
@@ -181,12 +181,12 @@ impl Gui {
     /// for this is `0xFF00FF`.
     ///
     /// Returns a reference to the image.
-    pub fn load_sprite_from_file<P>(&mut self, path: P, mask_color: Color) -> Result<SpriteRef, Box<Error>> where P: AsRef<Path> {
+    pub fn load_sprite_from_file<P>(&mut self, path: P, mask_color: Color) -> Result<SpriteRef, Box<dyn Error>> where P: AsRef<Path> {
         self.resources.load_sprite_from_file(path, mask_color)
     }
 
     /// Load image from serialized memory. Returns a reference to the image.
-    pub fn load_sprite_from_memory(&mut self, buffer: &[u8]) -> Result<SpriteRef, Box<Error>> {
+    pub fn load_sprite_from_memory(&mut self, buffer: &[u8]) -> Result<SpriteRef, Box<dyn Error>> {
         self.resources.load_sprite_from_memory(buffer)
     }
 
@@ -196,12 +196,12 @@ impl Gui {
     /// for this is `0xFF00FF`.
     ///
     /// Returns a reference to the font.
-    pub fn load_font_sprite_from_file<P>(&mut self, path: P, settings: FontSettings) -> Result<FontRef, Box<Error>> where P: AsRef<Path> {
+    pub fn load_font_sprite_from_file<P>(&mut self, path: P, settings: FontSettings) -> Result<FontRef, Box<dyn Error>> where P: AsRef<Path> {
         self.resources.load_font_sprite_from_file(path, settings)
     }
 
     /// Load image from serialized memory. Returns a reference to the image.
-    pub fn load_font_sprite_from_memory(&mut self, buffer: &[u8], settings: FontSettings) -> Result<FontRef, Box<Error>> {
+    pub fn load_font_sprite_from_memory(&mut self, buffer: &[u8], settings: FontSettings) -> Result<FontRef, Box<dyn Error>> {
         self.resources.load_font_sprite_from_memory(buffer, settings)
     }
 }
