@@ -36,7 +36,7 @@ name = "sprite"
 path = "examples/sprite.rs"
 
 [dev-dependencies]
-minifb = "0.13"
+minifb = "0.14"
 
 [build-dependencies]
 blit = "0.5"
