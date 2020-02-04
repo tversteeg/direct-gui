@@ -1,10 +1,10 @@
-use blit::{Color, BlitBuffer, BlitExt};
+use blit::{BlitBuffer, BlitExt, Color};
 use image;
+use std::error::Error;
 use std::fmt;
 use std::path::Path;
-use std::error::Error;
 
-use font::*;
+use super::font::*;
 
 /// An error type for when a image has the wrong extension.
 #[derive(Debug, Clone)]
@@ -38,7 +38,7 @@ pub struct FontRef(usize);
 #[derive(Debug)]
 pub struct Resources {
     sprites: Vec<BlitBuffer>,
-    fonts: Vec<Font>
+    fonts: Vec<Font>,
 }
 
 impl Resources {
@@ -46,19 +46,20 @@ impl Resources {
         let mut fonts = Vec::new();
 
         // Load the default font
-        let default_font_buffer = BlitBuffer::from_memory(include_bytes!("../resources/ArtosSans.png.blit")).unwrap();
+        let default_font_buffer =
+            BlitBuffer::from_memory(include_bytes!("../resources/ArtosSans.png.blit")).unwrap();
 
         let default_font_settings = FontSettings {
             start: '!',
             char_size: (9, 9),
             leading_offset: 2,
-            mask_color: Color::from_u32(0xFF00FF)
+            mask_color: Color::from_u32(0xFF00FF),
         };
         fonts.push(Font::new(default_font_buffer, default_font_settings));
 
         Resources {
             fonts,
-            sprites: Vec::new()
+            sprites: Vec::new(),
         }
     }
 
@@ -74,7 +75,14 @@ impl Resources {
     /// for this is `0xFF00FF`.
     ///
     /// Returns a reference to the image.
-    pub fn load_sprite_from_file<P>(&mut self, path: P, mask_color: Color) -> Result<SpriteRef, Box<dyn Error>> where P: AsRef<Path> {
+    pub fn load_sprite_from_file<P>(
+        &mut self,
+        path: P,
+        mask_color: Color,
+    ) -> Result<SpriteRef, Box<dyn Error>>
+    where
+        P: AsRef<Path>,
+    {
         let index = self.sprites.len();
 
         let buffer = Resources::load_blitbuffer(path.as_ref(), mask_color)?;
@@ -106,7 +114,14 @@ impl Resources {
     /// and `.blit` extension respectively.
     ///
     /// Returns a reference to the font.
-    pub fn load_font_sprite_from_file<P>(&mut self, path: P, settings: FontSettings) -> Result<FontRef, Box<dyn Error>> where P: AsRef<Path> {
+    pub fn load_font_sprite_from_file<P>(
+        &mut self,
+        path: P,
+        settings: FontSettings,
+    ) -> Result<FontRef, Box<dyn Error>>
+    where
+        P: AsRef<Path>,
+    {
         let index = self.fonts.len();
 
         let buffer = Resources::load_blitbuffer(path.as_ref(), settings.mask_color)?;
@@ -116,7 +131,11 @@ impl Resources {
     }
 
     /// Load image from serialized memory.
-    pub fn load_font_sprite_from_memory(&mut self, buffer: &[u8], settings: FontSettings) -> Result<FontRef, Box<dyn Error>> {
+    pub fn load_font_sprite_from_memory(
+        &mut self,
+        buffer: &[u8],
+        settings: FontSettings,
+    ) -> Result<FontRef, Box<dyn Error>> {
         let index = self.sprites.len();
 
         let blitbuffer = BlitBuffer::from_memory(buffer)?;
@@ -135,20 +154,23 @@ impl Resources {
     }
 
     pub fn load_blitbuffer(path: &Path, mask_color: Color) -> Result<BlitBuffer, Box<dyn Error>> {
-        let ext = path.extension().and_then(|s| s.to_str()).map_or("".to_string(), |s| s.to_ascii_lowercase());
+        let ext = path
+            .extension()
+            .and_then(|s| s.to_str())
+            .map_or("".to_string(), |s| s.to_ascii_lowercase());
 
         let buffer = match &ext[..] {
-            "blit" => {
-                BlitBuffer::open(path)?
-            },
+            "blit" => BlitBuffer::open(path)?,
             "png" => {
                 // Open the image from the path and convert it to a blit buffer
                 let img = image::open(path)?;
-                let rgb = img.as_rgb8().expect("Image is not of a valid type, consider removing the alpha channel");
+                let rgb = img
+                    .as_rgb8()
+                    .expect("Image is not of a valid type, consider removing the alpha channel");
 
                 rgb.to_blit_buffer(mask_color)
-            },
-            _ => return Err(Box::new(InvalidImageFormat))
+            }
+            _ => return Err(Box::new(InvalidImageFormat)),
         };
 
         Ok(buffer)

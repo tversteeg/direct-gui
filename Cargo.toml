@@ -20,8 +20,8 @@ build = "build.rs"
 travis-ci = {repository = "tversteeg/direct-gui"}
 
 [dependencies]
-blit = "0.5"
-image = "0.22"
+blit = "0.5.7"
+image = "0.22.4"
 
 [[example]]
 name = "button"
@@ -36,8 +36,8 @@ name = "sprite"
 path = "examples/sprite.rs"
 
 [dev-dependencies]
-minifb = "0.15"
+minifb = "0.15.3"
 
 [build-dependencies]
-blit = "0.5"
-image = "0.22"
+blit = "0.5.7"
+image = "0.22.4"
