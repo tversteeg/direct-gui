@@ -1,6 +1,6 @@
 [package]
 name = "direct-gui"
-version = "0.1.23-alpha.0"
+version = "0.1.23"
 edition = "2018"
 authors = ["Thomas Versteeg <thomasversteeg@gmx.com>"]
 license = "GPL-3.0"
