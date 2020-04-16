@@ -43,7 +43,12 @@ impl Control for Sprite {
 
         let draw_size = sprite.size();
 
-        sprite.blit_rect(buffer, buffer_width, self.pos, (0, 0, draw_size.0, draw_size.1));
+        sprite.blit_rect(
+            buffer,
+            buffer_width,
+            self.pos,
+            (0, 0, draw_size.0, draw_size.1),
+        );
     }
 
     fn as_any(&self) -> &dyn Any {

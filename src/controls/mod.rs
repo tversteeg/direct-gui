@@ -1,10 +1,10 @@
 mod button;
-mod text;
 mod sprite;
+mod text;
 
-pub use self::button::{Button, ButtonState, Image, Flat};
-pub use self::text::Label;
+pub use self::button::{Button, ButtonState, Flat, Image};
 pub use self::sprite::Sprite;
+pub use self::text::Label;
 
 use std::any::Any;
 
@@ -14,7 +14,7 @@ use super::resources::*;
 pub enum ControlType {
     Button,
     Label,
-    Sprite
+    Sprite,
 }
 
 /// Data that needs to be supplied to the `update` function.
@@ -22,13 +22,14 @@ pub struct ControlState {
     /// The position of the mouse cursor. Is not required to be inside the bounds of the screen.
     pub mouse_pos: (i32, i32),
     /// If the left mouse button is pressed or not.
-    pub mouse_down: bool
+    pub mouse_down: bool,
 }
 
 impl ControlState {
     /// Determines if the mouse is inside a rectangle. Mostly used internally.
     pub fn mouse_collision(&self, pos: (i32, i32), size: (i32, i32)) -> bool {
-        self.mouse_pos.0 >= pos.0 && self.mouse_pos.1 >= pos.1
+        self.mouse_pos.0 >= pos.0
+            && self.mouse_pos.1 >= pos.1
             && self.mouse_pos.0 < pos.0 + size.0
             && self.mouse_pos.1 < pos.1 + size.1
     }
@@ -38,7 +39,7 @@ impl Default for ControlState {
     fn default() -> Self {
         ControlState {
             mouse_pos: (0, 0),
-            mouse_down: false
+            mouse_down: false,
         }
     }
 }

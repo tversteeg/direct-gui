@@ -1,7 +1,7 @@
 //! Convert the default fonts in assets to a blitbuffer file which can be used by `default_font`.
 
-extern crate image;
 extern crate blit;
+extern crate image;
 
 use std::fs;
 
@@ -26,6 +26,6 @@ fn main() {
     for path in asset_paths {
         let filepath = path.unwrap().path();
         let filename = filepath.file_name().unwrap();
-        save_blit_buffer_from_image(filename.to_str().unwrap(), 0xFF00FF);
+        save_blit_buffer_from_image(filename.to_str().unwrap(), 0xFF_00_FF);
     }
 }

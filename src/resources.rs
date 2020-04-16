@@ -35,7 +35,7 @@ pub struct SpriteRef(usize);
 pub struct FontRef(usize);
 
 /// A internal handler of static resources such as sprites and fonts.
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub struct Resources {
     sprites: Vec<BlitBuffer>,
     fonts: Vec<Font>,
@@ -53,7 +53,7 @@ impl Resources {
             start: '!',
             char_size: (9, 9),
             leading_offset: 2,
-            mask_color: Color::from_u32(0xFF00FF),
+            mask_color: Color::from_u32(0xFF_00_FF),
         };
         fonts.push(Font::new(default_font_buffer, default_font_settings));
 
@@ -72,7 +72,7 @@ impl Resources {
     /// and `.blit` extension respectively.
     ///
     /// The mask color is the color that will be used as alpha in the sprite, a common color to use
-    /// for this is `0xFF00FF`.
+    /// for this is `0xFF_00_FF`.
     ///
     /// Returns a reference to the image.
     pub fn load_sprite_from_file<P>(

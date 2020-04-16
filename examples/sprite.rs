@@ -11,7 +11,7 @@ const WIDTH: usize = 120;
 const HEIGHT: usize = 80;
 
 fn main() {
-    let mut buffer: Vec<u32> = vec![0x222222; WIDTH * HEIGHT];
+    let mut buffer: Vec<u32> = vec![0x22_22_22; WIDTH * HEIGHT];
 
     let mut window = Window::new(
         "direct-gui sprite example - ESC to exit",
@@ -24,7 +24,7 @@ fn main() {
     let mut gui = Gui::new((WIDTH as i32, HEIGHT as i32));
 
     let button_img = gui
-        .load_sprite_from_file("examples/sprite.png", Color::from_u32(0xFF00FF))
+        .load_sprite_from_file("examples/sprite.png", Color::from_u32(0xFF_00_FF))
         .unwrap();
     gui.register(Sprite::new_with_sprite(button_img).with_pos(0, 0));
 
@@ -33,10 +33,10 @@ fn main() {
             ..ControlState::default()
         };
 
-        window.get_mouse_pos(MouseMode::Pass).map(|mouse| {
+        if let Some(mouse) = window.get_mouse_pos(MouseMode::Pass) {
             cs.mouse_pos = (mouse.0 as i32, mouse.1 as i32);
             cs.mouse_down = window.get_mouse_down(MouseButton::Left);
-        });
+        };
 
         gui.update(&cs);
         gui.draw_to_buffer(&mut buffer);

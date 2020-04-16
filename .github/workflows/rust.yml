@@ -17,7 +17,6 @@ jobs:
       fail-fast: false
       matrix:
           os: [ubuntu-latest, macOS-latest, windows-latest]
-          rust: [stable, nightly]
     steps:
       - uses: actions/checkout@v2
 
@@ -51,7 +50,7 @@ jobs:
           args: --all-targets --all-features -- -D clippy::all
 
       - name: cargo test
-        uses: actions-rs/clippy-check@v1
+        uses: actions-rs/cargo@v1
         with:
           command: test
           args: -- -Z unstable-options --include-ignored

@@ -52,20 +52,20 @@
 extern crate blit;
 extern crate image;
 
+use std::error::Error;
 use std::fmt;
 use std::path::Path;
-use std::error::Error;
 
 pub mod controls;
-mod resources;
 mod font;
+mod resources;
 
 pub use blit::Color;
 
-pub use font::FontSettings;
-pub use resources::{SpriteRef, FontRef};
 use controls::*;
+pub use font::FontSettings;
 use resources::*;
+pub use resources::{FontRef, SpriteRef};
 
 /// An error type for when a reference is not valid anymore.
 #[derive(Debug, Clone)]
@@ -99,7 +99,7 @@ pub struct Gui {
 
     resources: Resources,
     controls: Vec<(ControlRef, Box<dyn Control>)>,
-    control_ref: usize
+    control_ref: usize,
 }
 
 impl Gui {
@@ -109,7 +109,7 @@ impl Gui {
             size,
             resources: Resources::new(),
             controls: Vec::new(),
-            control_ref: 0
+            control_ref: 0,
         }
     }
 
@@ -123,22 +123,31 @@ impl Gui {
     /// Draw the drawable GUI controls on a target buffer.
     pub fn draw_to_buffer(&mut self, buffer: &mut Vec<u32>) {
         for control_tuple in self.controls.iter_mut() {
-            control_tuple.1.draw(buffer, self.size.0 as usize, &self.resources);
+            control_tuple
+                .1
+                .draw(buffer, self.size.0 as usize, &self.resources);
         }
     }
 
     /// Draw a label a single frame.
-    pub fn draw_label(&mut self, buffer: &mut Vec<u32>, font_ref: FontRef, string: &String, pos: (i32, i32)) {
+    pub fn draw_label<S: Into<String>>(
+        &mut self,
+        buffer: &mut Vec<u32>,
+        font_ref: FontRef,
+        string: S,
+        pos: (i32, i32),
+    ) {
         let font = self.resources.get_font(font_ref).unwrap();
 
-        font.draw_string(buffer, self.size.0 as usize, string, pos);
+        font.draw_string(buffer, self.size.0 as usize, string.into(), pos);
     }
 
     /// Register a control.
     pub fn register<T: 'static + Control>(&mut self, ctrl: T) -> ControlRef {
         self.control_ref += 1;
 
-        self.controls.push((ControlRef(self.control_ref), Box::new(ctrl)));
+        self.controls
+            .push((ControlRef(self.control_ref), Box::new(ctrl)));
 
         ControlRef(self.control_ref)
     }
@@ -146,26 +155,25 @@ impl Gui {
     /// Retrieve a control by reference.
     pub fn get<T: 'static + Control>(&self, control_ref: ControlRef) -> Result<&T, Box<dyn Error>> {
         match self.controls.iter().find(|&c| c.0 == control_ref) {
-            Some(c) => {
-                match c.1.as_any().downcast_ref::<T>() {
-                    Some(obj) => Ok(obj),
-                    None => Err(Box::new(InvalidControlReference))
-                }
+            Some(c) => match c.1.as_any().downcast_ref::<T>() {
+                Some(obj) => Ok(obj),
+                None => Err(Box::new(InvalidControlReference)),
             },
-            None => Err(Box::new(InvalidControlReference))
+            None => Err(Box::new(InvalidControlReference)),
         }
     }
 
     /// Retrieve a control by mutable reference.
-    pub fn get_mut<T: 'static + Control>(&mut self, control_ref: ControlRef) -> Result<&mut T, Box<dyn Error>> {
+    pub fn get_mut<T: 'static + Control>(
+        &mut self,
+        control_ref: ControlRef,
+    ) -> Result<&mut T, Box<dyn Error>> {
         match self.controls.iter_mut().find(|c| c.0 == control_ref) {
-            Some(c) => {
-                match c.1.as_any_mut().downcast_mut::<T>() {
-                    Some(obj) => Ok(obj),
-                    None => Err(Box::new(InvalidControlReference))
-                }
+            Some(c) => match c.1.as_any_mut().downcast_mut::<T>() {
+                Some(obj) => Ok(obj),
+                None => Err(Box::new(InvalidControlReference)),
             },
-            None => Err(Box::new(InvalidControlReference))
+            None => Err(Box::new(InvalidControlReference)),
         }
     }
 
@@ -181,7 +189,14 @@ impl Gui {
     /// for this is `0xFF00FF`.
     ///
     /// Returns a reference to the image.
-    pub fn load_sprite_from_file<P>(&mut self, path: P, mask_color: Color) -> Result<SpriteRef, Box<dyn Error>> where P: AsRef<Path> {
+    pub fn load_sprite_from_file<P>(
+        &mut self,
+        path: P,
+        mask_color: Color,
+    ) -> Result<SpriteRef, Box<dyn Error>>
+    where
+        P: AsRef<Path>,
+    {
         self.resources.load_sprite_from_file(path, mask_color)
     }
 
@@ -196,12 +211,24 @@ impl Gui {
     /// for this is `0xFF00FF`.
     ///
     /// Returns a reference to the font.
-    pub fn load_font_sprite_from_file<P>(&mut self, path: P, settings: FontSettings) -> Result<FontRef, Box<dyn Error>> where P: AsRef<Path> {
+    pub fn load_font_sprite_from_file<P>(
+        &mut self,
+        path: P,
+        settings: FontSettings,
+    ) -> Result<FontRef, Box<dyn Error>>
+    where
+        P: AsRef<Path>,
+    {
         self.resources.load_font_sprite_from_file(path, settings)
     }
 
     /// Load image from serialized memory. Returns a reference to the image.
-    pub fn load_font_sprite_from_memory(&mut self, buffer: &[u8], settings: FontSettings) -> Result<FontRef, Box<dyn Error>> {
-        self.resources.load_font_sprite_from_memory(buffer, settings)
+    pub fn load_font_sprite_from_memory(
+        &mut self,
+        buffer: &[u8],
+        settings: FontSettings,
+    ) -> Result<FontRef, Box<dyn Error>> {
+        self.resources
+            .load_font_sprite_from_memory(buffer, settings)
     }
 }

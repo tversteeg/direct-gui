@@ -6,7 +6,7 @@ pub struct Label {
 
     pos: (i32, i32),
 
-    text: String
+    text: String,
 }
 
 impl Label {
@@ -15,7 +15,7 @@ impl Label {
         Label {
             font_ref,
             pos: (0, 0),
-            text: String::new()
+            text: String::new(),
         }
     }
 
@@ -55,7 +55,7 @@ impl Label {
 }
 
 impl Control for Label {
-    fn update(&mut self, _args: &ControlState, _res: &Resources) { }
+    fn update(&mut self, _args: &ControlState, _res: &Resources) {}
 
     fn draw(&self, buffer: &mut Vec<u32>, buffer_width: usize, res: &Resources) {
         let font = res.get_font(self.font_ref).unwrap();

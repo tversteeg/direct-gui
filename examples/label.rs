@@ -13,7 +13,7 @@ const WIDTH: usize = 400;
 const HEIGHT: usize = 160;
 
 fn main() {
-    let mut buffer: Vec<u32> = vec![0x222222; WIDTH * HEIGHT];
+    let mut buffer: Vec<u32> = vec![0x22_22_22; WIDTH * HEIGHT];
 
     let mut window = Window::new(
         "direct-gui label example - ESC to exit",
@@ -39,7 +39,7 @@ fn main() {
                 start: '!',
                 char_size: (9, 9),
                 leading_offset: 2,
-                mask_color: Color::from_u32(0xFF00FF),
+                mask_color: Color::from_u32(0xFF_00_FF),
             },
         )
         .unwrap();
@@ -56,7 +56,7 @@ fn main() {
                 start: '!',
                 char_size: (9, 9),
                 leading_offset: 2,
-                mask_color: Color::from_u32(0xFF00FF),
+                mask_color: Color::from_u32(0xFF_00_FF),
             },
         )
         .unwrap();

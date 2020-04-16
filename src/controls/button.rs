@@ -6,13 +6,13 @@ use super::*;
 #[derive(Debug)]
 pub struct Flat {
     pub color: Color,
-    pub size: (i32, i32)
+    pub size: (i32, i32),
 }
 
 /// The skin of the button is a sprite.
 #[derive(Debug)]
 pub struct Image {
-    pub sprite_ref: SpriteRef
+    pub sprite_ref: SpriteRef,
 }
 
 /// In what state the button currently is in as determined by the `update` function.
@@ -23,7 +23,7 @@ pub enum ButtonState {
     /// The mouse is hovering over the button but it's not pressed.
     Hover,
     /// The mouse is hovering over the button and it's pressed.
-    Pressed
+    Pressed,
 }
 
 /// A button widget that can be rendered in multiple ways:
@@ -36,7 +36,7 @@ pub struct Button<S> {
     pos: (i32, i32),
     state: ButtonState,
 
-    state_changed: fn(&mut Button<S>, ButtonState)
+    state_changed: fn(&mut Button<S>, ButtonState),
 }
 
 impl<S> Button<S> {
@@ -61,7 +61,7 @@ impl<S> Button<S> {
     pub fn pressed(&self) -> bool {
         match self.state {
             ButtonState::Pressed => true,
-            _ => false
+            _ => false,
         }
     }
 
@@ -79,15 +79,13 @@ impl<S> Button<S> {
 impl Button<Flat> {
     /// Create a new colored button without text.
     pub fn new(size: (i32, i32), color: Color) -> Self {
-        let show = Flat {
-            size, color
-        };
+        let show = Flat { size, color };
 
         Button {
             show,
             pos: (0, 0),
             state: ButtonState::Normal,
-            state_changed: Button::empty_state_changed_callback
+            state_changed: Button::empty_state_changed_callback,
         }
     }
 }
@@ -99,9 +97,10 @@ impl Control for Button<Flat> {
         if !args.mouse_collision(self.pos, self.show.size) {
             self.state = ButtonState::Normal;
         } else {
-            self.state = match args.mouse_down {
-                true => ButtonState::Pressed,
-                false => ButtonState::Hover
+            self.state = if args.mouse_down {
+                ButtonState::Pressed
+            } else {
+                ButtonState::Hover
             };
         }
 
@@ -115,16 +114,19 @@ impl Control for Button<Flat> {
         let mut color = self.show.color.u32();
 
         match self.state {
-            ButtonState::Hover => color |= 0x444444,
-            ButtonState::Pressed => color &= 0xAAAAAA,
-            _ => ()
+            ButtonState::Hover => color |= 0x44_44_44,
+            ButtonState::Pressed => color &= 0xAA_AA_AA,
+            _ => (),
         }
 
         for y in self.pos.1..self.pos.1 + self.show.size.1 {
             for x in self.pos.0..self.pos.0 + self.show.size.0 {
                 let index = x as usize + y as usize * buffer_width;
-                if x == self.pos.0 || x == self.pos.0 + self.show.size.0 - 1
-                    || y == self.pos.1 || y == self.pos.1 + self.show.size.1 - 1 {
+                if x == self.pos.0
+                    || x == self.pos.0 + self.show.size.0 - 1
+                    || y == self.pos.1
+                    || y == self.pos.1 + self.show.size.1 - 1
+                {
                     buffer[index] = 0;
                 } else {
                     buffer[x as usize + y as usize * buffer_width] = color;
@@ -154,7 +156,7 @@ impl Button<Image> {
     ///  2. mouse hover state
     ///  3. mouse pressed state
     ///
-    /// ```ignore
+    /// ```compile_fail
     /// +-------+
     /// |Normal |
     /// +-------+
@@ -164,15 +166,13 @@ impl Button<Image> {
     /// +-------+
     /// ```
     pub fn new_with_sprite(sprite_ref: SpriteRef) -> Self {
-        let img = Image {
-            sprite_ref
-        };
+        let img = Image { sprite_ref };
 
         Button {
             show: img,
             pos: (0, 0),
             state: ButtonState::Normal,
-            state_changed: Button::empty_state_changed_callback
+            state_changed: Button::empty_state_changed_callback,
         }
     }
 }
@@ -188,9 +188,10 @@ impl Control for Button<Image> {
         if !args.mouse_collision(self.pos, real_size) {
             self.state = ButtonState::Normal;
         } else {
-            self.state = match args.mouse_down {
-                true => ButtonState::Pressed,
-                false => ButtonState::Hover
+            self.state = if args.mouse_down {
+                ButtonState::Pressed
+            } else {
+                ButtonState::Hover
             };
         }
 
@@ -209,10 +210,15 @@ impl Control for Button<Image> {
         let height_offset = match self.state {
             ButtonState::Normal => 0,
             ButtonState::Hover => draw_size.1,
-            ButtonState::Pressed => draw_size.1 * 2
+            ButtonState::Pressed => draw_size.1 * 2,
         } as i32;
 
-        sprite.blit_rect(buffer, buffer_width, self.pos, (0, height_offset, draw_size.0, draw_size.1));
+        sprite.blit_rect(
+            buffer,
+            buffer_width,
+            self.pos,
+            (0, height_offset, draw_size.0, draw_size.1),
+        );
     }
 
     fn control_type(&self) -> ControlType {
