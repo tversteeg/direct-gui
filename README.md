@@ -1,7 +1,10 @@
 # direct-gui
 Simple direct rendering GUI controls
 
-[![Build Status](https://travis-ci.org/tversteeg/direct-gui.svg?branch=master)](https://travis-ci.org/tversteeg/direct-gui) [![Cargo](https://img.shields.io/crates/v/direct-gui.svg)](https://crates.io/crates/direct-gui) [![License: GPL-3.0](https://img.shields.io/crates/l/direct-gui.svg)](#license) [![Downloads](https://img.shields.io/crates/d/direct-gui.svg)](#downloads)
+<a href="https://github.com/tversteeg/direct-gui/actions"><img src="https://github.com/tversteeg/direct-gui/workflows/CI/badge.svg" alt="CI"/></a>
+<a href="https://crates.io/crates/direct-gui"><img src="https://img.shields.io/crates/v/direct-gui.svg" alt="Version"/></a>
+<a href="https://docs.rs/direct-gui"><img src="https://img.shields.io/badge/api-rustdoc-blue.svg" alt="Rust Documentation"/></a>
+<img src="https://img.shields.io/crates/l/direct-gui.svg" alt="License"/>
 
 ### [Documentation](https://docs.rs/direct-gui/)
 
@@ -22,7 +25,7 @@ extern crate direct_gui;
 
 ### Run the examples
 
-On Linux you need the `xorg-dev` package as required by `minifb` -- `sudo apt install xorg-dev`
+On Linux you need the `xkb` & `wayland` packages as required by `minifb` -- `sudo apt install libwayland-cursor0 libxkbcommon-dev libwayland-dev`
 
     cargo run --example button
 
