@@ -12,13 +12,7 @@
 //! direct-gui = "0.1"
 //! ```
 //!
-//! and this to your crate root:
-//!
-//! ```rust
-//! extern crate direct_gui;
-//! ```
-//!
-//! # Examples
+//! # Example
 //!
 //! ```rust
 //! use direct_gui::*;
@@ -49,12 +43,9 @@
 //! gui.draw_to_buffer(&mut buffer);
 //! ```
 
-extern crate blit;
-extern crate image;
-
-use std::error::Error;
-use std::fmt;
+#[cfg(feature = "file-loading")]
 use std::path::Path;
+use std::{error::Error, fmt};
 
 pub mod controls;
 mod font;
@@ -185,10 +176,13 @@ impl Gui {
 
     /// Load image from a path.
     ///
+    /// This function is only available when the `"file-loading"` feature is enabled.
+    ///
     /// The mask color is the color that will be used as alpha in the sprite, a common color to use
     /// for this is `0xFF00FF`.
     ///
     /// Returns a reference to the image.
+    #[cfg(feature = "file-loading")]
     pub fn load_sprite_from_file<P>(
         &mut self,
         path: P,
@@ -207,10 +201,13 @@ impl Gui {
 
     /// Load font image from a path.
     ///
+    /// This function is only available when the `"file-loading"` feature is enabled.
+    ///
     /// The mask color is the color that will be used as alpha in the sprite, a common color to use
     /// for this is `0xFF00FF`.
     ///
     /// Returns a reference to the font.
+    #[cfg(feature = "file-loading")]
     pub fn load_font_sprite_from_file<P>(
         &mut self,
         path: P,

@@ -19,9 +19,13 @@ build = "build.rs"
 [badges]
 travis-ci = {repository = "tversteeg/direct-gui"}
 
+[features]
+default = ["file-loading"]
+file-loading = ["image"]
+
 [dependencies]
 blit = "0.5.12"
-image = "0.23.3"
+image = { version = "0.23.3", optional = true }
 
 [[example]]
 name = "button"

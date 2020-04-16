@@ -1,7 +1,11 @@
-use blit::{BlitBuffer, BlitExt, Color};
+use blit::{BlitBuffer, Color};
+use std::{error::Error, fmt};
+
+#[cfg(feature = "file-loading")]
+use blit::BlitExt;
+#[cfg(feature = "file-loading")]
 use image;
-use std::error::Error;
-use std::fmt;
+#[cfg(feature = "file-loading")]
 use std::path::Path;
 
 use super::font::*;
@@ -68,13 +72,17 @@ impl Resources {
         FontRef(0)
     }
 
-    /// Load image from a path. Accepts both PNG & BlitBuffer images which should have the `.png`
-    /// and `.blit` extension respectively.
+    /// Load image from a path.
+    ///
+    /// This function is only available when the `"file-loading"` feature is enabled.
+    ///
+    /// Accepts both PNG & BlitBuffer images which should have the `.png` and `.blit` extension respectively.
     ///
     /// The mask color is the color that will be used as alpha in the sprite, a common color to use
     /// for this is `0xFF_00_FF`.
     ///
     /// Returns a reference to the image.
+    #[cfg(feature = "file-loading")]
     pub fn load_sprite_from_file<P>(
         &mut self,
         path: P,
@@ -113,7 +121,10 @@ impl Resources {
     /// Load font image from a path. Accepts both PNG & BlitBuffer images which should have the `.png`
     /// and `.blit` extension respectively.
     ///
+    /// This function is only available when the `"file-loading"` feature is enabled.
+    ///
     /// Returns a reference to the font.
+    #[cfg(feature = "file-loading")]
     pub fn load_font_sprite_from_file<P>(
         &mut self,
         path: P,
@@ -153,6 +164,10 @@ impl Resources {
         }
     }
 
+    /// Load a encoded image from a file.
+    ///
+    /// This function is only available when the `"file-loading"` feature is enabled.
+    #[cfg(feature = "file-loading")]
     pub fn load_blitbuffer(path: &Path, mask_color: Color) -> Result<BlitBuffer, Box<dyn Error>> {
         let ext = path
             .extension()
