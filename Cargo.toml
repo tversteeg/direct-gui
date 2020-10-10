@@ -1,6 +1,6 @@
 [package]
 name = "direct-gui"
-version = "0.1.25"
+version = "0.1.26"
 edition = "2018"
 authors = ["Thomas Versteeg <thomasversteeg@gmx.com>"]
 license = "GPL-3.0"
@@ -18,6 +18,7 @@ build = "build.rs"
 
 [badges]
 travis-ci = {repository = "tversteeg/direct-gui"}
+maintenance = { status = "deprecated" }
 
 [features]
 default = ["file-loading"]
